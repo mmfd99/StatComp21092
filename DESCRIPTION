@@ -1,0 +1,17 @@
+Package: StatComp21092
+Type: Package
+Title: Final
+Version: 0.1.0
+Author: Yu Ji
+Maintainer: Yu Ji <jiyu2017@mail.ustc.edu.cn>
+Description: Final of Statistical Computing is here.
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: true
+Imports: Rcpp (>= 1.0.7), microbenchmark, graphics, MASS, bootstrap, boot, RANN, Ball, energy, installr, lattice, stats
+LinkingTo: Rcpp
+RoxygenNote: 7.1.2
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+URL: http://github.com/mmfd99/StatComp21092
+BugReports: http://github.com/mmfd99/StatComp21092/issues
