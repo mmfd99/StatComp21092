@@ -9,3 +9,13 @@ timesTwo <- function(x) {
     .Call('_StatComp21092_timesTwo', PACKAGE = 'StatComp21092', x)
 }
 
+#' @title A Gibbs sampler using Rcpp
+#' @description A Gibbs sampler using Rcpp
+#' @param N the number of samples
+#' @param thin the number of between-sample random numbers
+#' @return random sample list
+#' @export
+gibbsC <- function(N, thin) {
+    .Call('_StatComp21092_gibbsC', PACKAGE = 'StatComp21092', N, thin)
+}
+

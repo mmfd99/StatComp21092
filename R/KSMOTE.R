@@ -8,7 +8,13 @@ NULL
 #' @description We use this imbalanced dataset to carry out our interpolation algorithm.
 NULL
 
-
+#' @title Benchmark R and Rcpp functions.
+#' @name benchmarks
+#' @import microbenchmark
+#' @importFrom Rcpp evalCpp
+#' @importFrom stats rbinom rbeta
+#' @useDynLib StatComp21092
+NULL
 
 #' This is some descriptio of this function.
 #' @title kernel function

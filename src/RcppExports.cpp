@@ -21,9 +21,22 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// gibbsC
+NumericMatrix gibbsC(int N, int thin);
+RcppExport SEXP _StatComp21092_gibbsC(SEXP NSEXP, SEXP thinSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type N(NSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    rcpp_result_gen = Rcpp::wrap(gibbsC(N, thin));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_StatComp21092_timesTwo", (DL_FUNC) &_StatComp21092_timesTwo, 1},
+    {"_StatComp21092_gibbsC", (DL_FUNC) &_StatComp21092_gibbsC, 2},
     {NULL, NULL, 0}
 };
 
