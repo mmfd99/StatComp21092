@@ -17,3 +17,6 @@ kernel inner product
 \description{
 This is some descriptio of this function.
 }
+\examples{
+x=c(1,2);y=c(1,2);print(kernel_poly(x,y))
+}

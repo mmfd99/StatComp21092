@@ -565,21 +565,21 @@ cv<-6*qchisq(0.975,2)/n
 
 #比较
 
-p.reject=numeric(length(n)) 
-m=100
-for (i in 1:length(n))
-{
-  sktests <- numeric(m)
-  for (j in 1:m)
-  {
-
-    sktests[j] <- as.integer(abs(b(n[i])) >= cv[i] )
-  }
-  p.reject[i] <- mean(sktests) #proportion rejected
-}
-t2=proc.time()
-p.reject
-t2-t1
+# p.reject=numeric(length(n)) 
+# m=100
+# for (i in 1:length(n))
+# {
+#   sktests <- numeric(m)
+#   for (j in 1:m)
+#   {
+# 
+#     sktests[j] <- as.integer(abs(b(n[i])) >= cv[i] )
+#   }
+#   p.reject[i] <- mean(sktests) #proportion rejected
+# }
+# t2=proc.time()
+# p.reject
+# t2-t1
 ```
 
 
@@ -621,23 +621,23 @@ b1<-function(n,e)
   b1d
 }
 
-for (j in 1:N)
-{
-  e <- epsilon[j]
-  sktests <- numeric(m)
-  for (i in 1:m)
-  {
-    sktests[i] <- as.integer(abs(b1(n,e)) >= cv)
-  }
-  pwr[j] <- mean(sktests)
-}
-#plot power vs epsilon
-plot(epsilon, pwr, type = "b",
-xlab = bquote(epsilon), ylim = c(0,1))
-abline(h = .1, lty = 3)
-se <- sqrt(pwr * (1-pwr) / m) #add standard errors
-lines(epsilon, pwr+se, lty = 3)
-lines(epsilon, pwr-se, lty = 3)
+# for (j in 1:N)
+# {
+#   e <- epsilon[j]
+#   sktests <- numeric(m)
+#   for (i in 1:m)
+#   {
+#     sktests[i] <- as.integer(abs(b1(n,e)) >= cv)
+#   }
+#   pwr[j] <- mean(sktests)
+# }
+# #plot power vs epsilon
+# plot(epsilon, pwr, type = "b",
+# xlab = bquote(epsilon), ylim = c(0,1))
+# abline(h = .1, lty = 3)
+# se <- sqrt(pwr * (1-pwr) / m) #add standard errors
+# lines(epsilon, pwr+se, lty = 3)
+# lines(epsilon, pwr-se, lty = 3)
 
 ```
 
@@ -1088,19 +1088,19 @@ set.seed(1)
 R=2e3
 p.values <- matrix(NA,m,3)
 
-for(i in 1:m)
-{
-  x=rnorm(n1,0,1)
-  y=runif(n2,-10,10)
-  z=c(x,y)
-  p.values[i,1]=eqdist.nn(z,N,k)
-  p.values[i,2]=eqdist.etest(z,N,R=R)$p.value
-  p.values[i,3]=bd.test(x,y,num.permutations = R)$p.value
-}
-alpha=0.1
-pow=colMeans(p.values<alpha)
-names(pow)=c("NN","Energy","Ball")
-pow
+# for(i in 1:m)
+# {
+#   x=rnorm(n1,0,1)
+#   y=runif(n2,-10,10)
+#   z=c(x,y)
+#   p.values[i,1]=eqdist.nn(z,N,k)
+#   p.values[i,2]=eqdist.etest(z,N,R=R)$p.value
+#   p.values[i,3]=bd.test(x,y,num.permutations = R)$p.value
+# }
+# alpha=0.1
+# pow=colMeans(p.values<alpha)
+# names(pow)=c("NN","Energy","Ball")
+# pow
 ```
 
 (ii)We choose $F\sim N(0,1)$ and $G\sim U(10,20)$.
@@ -1154,19 +1154,19 @@ set.seed(1)
 R=2e3
 p.values <- matrix(NA,m,3)
 
-for(i in 1:m)
-{
-  x=rnorm(n1,0,1)
-  y=runif(n2,10,20)
-  z=c(x,y)
-  p.values[i,1]=eqdist.nn(z,N,k)
-  p.values[i,2]=eqdist.etest(z,N,R=R)$p.value
-  p.values[i,3]=bd.test(x,y,num.permutations = R)$p.value
-}
-alpha=0.1
-pow=colMeans(p.values<alpha)
-names(pow)=c("NN","Energy","Ball")
-pow
+# for(i in 1:m)
+# {
+#   x=rnorm(n1,0,1)
+#   y=runif(n2,10,20)
+#   z=c(x,y)
+#   p.values[i,1]=eqdist.nn(z,N,k)
+#   p.values[i,2]=eqdist.etest(z,N,R=R)$p.value
+#   p.values[i,3]=bd.test(x,y,num.permutations = R)$p.value
+# }
+# alpha=0.1
+# pow=colMeans(p.values<alpha)
+# names(pow)=c("NN","Energy","Ball")
+# pow
 ```
 
 
@@ -1224,22 +1224,22 @@ set.seed(1)
 R=2e3
 p.values <- matrix(NA,m,3)
 
-for(i in 1:m)
-{
-  x=rt(n1,1)
-  X1<-rnorm(n2,0,1)
-  X2<-rnorm(n2,10,1)
-  k<-sample(c(0,1),n2,replace = TRUE,prob = c(0.5,0.5))
-  y<-k*X1+(1-k)*X2
-  z=c(x,y)
-  p.values[i,1]=eqdist.nn(z,N,k)
-  p.values[i,2]=eqdist.etest(z,N,R=R)$p.value
-  p.values[i,3]=bd.test(x,y,num.permutations = R)$p.value
-}
-alpha=0.1
-pow=colMeans(p.values<alpha)
-names(pow)=c("NN","Energy","Ball")
-pow
+# for(i in 1:m)
+# {
+#   x=rt(n1,1)
+#   X1<-rnorm(n2,0,1)
+#   X2<-rnorm(n2,10,1)
+#   k<-sample(c(0,1),n2,replace = TRUE,prob = c(0.5,0.5))
+#   y<-k*X1+(1-k)*X2
+#   z=c(x,y)
+#   p.values[i,1]=eqdist.nn(z,N,k)
+#   p.values[i,2]=eqdist.etest(z,N,R=R)$p.value
+#   p.values[i,3]=bd.test(x,y,num.permutations = R)$p.value
+# }
+# alpha=0.1
+# pow=colMeans(p.values<alpha)
+# names(pow)=c("NN","Energy","Ball")
+# pow
 ```
 
 (iv)We choose $F\sim t(1)$ and $G\sim N(0,1)+N(10,1)$, $n_1=20$ and $n2=4$.
@@ -1296,22 +1296,22 @@ set.seed(1)
 R=2e3
 p.values <- matrix(NA,m,3)
 
-for(i in 1:m)
-{
-  x=rt(n1,1)
-  X1<-rnorm(n2,0,1)
-  X2<-rnorm(n2,10,1)
-  k<-sample(c(0,1),n2,replace = TRUE,prob = c(0.5,0.5))
-  y<-k*X1+(1-k)*X2
-  z=c(x,y)
-  p.values[i,1]=eqdist.nn(z,N,k)
-  p.values[i,2]=eqdist.etest(z,N,R=R)$p.value
-  p.values[i,3]=bd.test(x,y,num.permutations = R)$p.value
-}
-alpha=0.1
-pow=colMeans(p.values<alpha)
-names(pow)=c("NN","Energy","Ball")
-pow
+# for(i in 1:m)
+# {
+#   x=rt(n1,1)
+#   X1<-rnorm(n2,0,1)
+#   X2<-rnorm(n2,10,1)
+#   k<-sample(c(0,1),n2,replace = TRUE,prob = c(0.5,0.5))
+#   y<-k*X1+(1-k)*X2
+#   z=c(x,y)
+#   p.values[i,1]=eqdist.nn(z,N,k)
+#   p.values[i,2]=eqdist.etest(z,N,R=R)$p.value
+#   p.values[i,3]=bd.test(x,y,num.permutations = R)$p.value
+# }
+# alpha=0.1
+# pow=colMeans(p.values<alpha)
+# names(pow)=c("NN","Energy","Ball")
+# pow
 ```
 
 # Homework 8
