@@ -1,5 +1,5 @@
-\name{StatComp-package}
-\alias{StatComp-package}
+\name{StatComp21092-package}
+\alias{StatComp21092-package}
 \docType{package}
 \title{
 This package provides several functions for K-SMOTE and SMO.
