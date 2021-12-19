@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Yu Ji" />
+
+<meta name="date" content="2021-12-19" />
+
+<title>KSMOTE</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">KSMOTE</h1>
+<h4 class="author">Yu Ji</h4>
+<h4 class="date">2021-12-19</h4>
+
+
+
+<div id="k-smote" class="section level1">
+<h1>1 K-SMOTE</h1>
+<div id="smote" class="section level2">
+<h2>1.1 SMOTE</h2>
+<p>SMOTE(Synthetic Minority Oversampling Technique)是一种基于线性插补的过采样方法。</p>
+<p>其想法是对某一少数类样本点与少数类k近邻之一进行线性插补，得到新的少数类样本，从而达到数据增强的目的。</p>
+<p>下面给出了数学表达式：</p>
+<p><span class="math display">\[\boldsymbol{x}_{syn}=\boldsymbol{x}_p+\delta(\boldsymbol{x}_q-\boldsymbol{x}_p),\quad \boldsymbol{x}_p,\boldsymbol{x}_q\in S_{min},\quad \delta\sim U(0,1) \]</span></p>
+<p>这里<span class="math inline">\(\boldsymbol{x}_q\)</span>为<span class="math inline">\(\boldsymbol{x}_p\)</span>的少数类k近邻之一。</p>
+</div>
+<div id="核方法" class="section level2">
+<h2>1.2 核方法</h2>
+<p>核方法是被广泛应用的方法，其典型算法是支持向量机SVM与RBF-NN。</p>
+<p>其想法是利用内积代替映射的显式表达，通过改变空间的度量结构达到简化学习任务的作用。</p>
+<p>下面给出了核函数的定义：</p>
+<p><span class="math display">\[K(\boldsymbol{x}_i,\boldsymbol{x}_j)=\langle \phi(\boldsymbol{x}_i),\phi(\boldsymbol{x}_j) \rangle\]</span> 这里<span class="math inline">\(\boldsymbol{x}_i,\boldsymbol{x}_j\)</span>为特征空间中的点，<span class="math inline">\(\boldsymbol{K}\)</span>为核函数，为再生核希尔伯特空间上的内积。</p>
+<p>再生核希尔伯特空间上由核函数诱导的距离如下：</p>
+<p><span class="math display">\[
+    d^{\phi}(\boldsymbol{x}_i,\boldsymbol{x}_j)=\Vert\phi(\boldsymbol{x}_i)-\phi(\boldsymbol{x}_j)\Vert^2=K(\boldsymbol{x}_i,\boldsymbol{x}_i)+K(\boldsymbol{x}_j,\boldsymbol{x}_j)-2K(\boldsymbol{x}_i,\boldsymbol{x}_j)
+\]</span></p>
+</div>
+<div id="基于核函数的smote" class="section level2">
+<h2>1.3 基于核函数的SMOTE</h2>
+<p>由于样本点间往往不具备线性结构，所以做简单的线性插补不能达到优化学习模型的效果。</p>
+<p>基于这样的想法，我们可以构建基于核函数的SMOTE。</p>
+<p><span class="math display">\[
+  \phi(\boldsymbol{x}_{syn})=\phi(\boldsymbol{x}_p)+\delta(\phi(\boldsymbol{x}_p)-\phi(\boldsymbol{x}_q)),\quad \delta\sim U(0,1)
+\]</span></p>
+<p>这里为了方便表达，我们利用了<span class="math inline">\(\phi\)</span>这一显式映射，事实上，在后续的算法实现过程中，<span class="math inline">\(\phi\)</span>是不会被表示出来的，我们会利用其内积，即核函数<span class="math inline">\(\boldsymbol{K}\)</span>来达到构建再生核希尔伯特空间的作用。</p>
+</div>
+</div>
+<div id="svm" class="section level1">
+<h1>2 SVM</h1>
+<p>SVM是核方法的一个典型应用。</p>
+<p>在经典的SVM算法中，我们需要解决如下优化问题：</p>
+<p><span class="math display">\[
+    \begin{align}
+        &amp;\min_{\alpha}\quad \frac{1}{2}\sum_{i,j=1}^N\alpha_i\alpha_jy_iy_j K(x_i,x_j)-\sum_{i=1}^N\alpha_i\\
+        &amp;s.t \quad \sum_{i=1}^N\alpha_iy_i=0\\
+        &amp;\quad \quad 0\le\alpha_i\le C,\quad i=1,2,\cdots,N
+    \end{align}
+\]</span></p>
+<p>利用KKT条件，问题的解为：</p>
+<p><span class="math display">\[
+    \begin{align}
+        &amp;w^{\ast}=\sum_{i=1}^{N}\alpha_i^{\ast}y_ix_i\\
+        &amp;b^{\ast}=y_j-\sum_{i=1}^N\alpha_i^{\ast}y_i K(x_i, x_j)
+    \end{align}
+\]</span></p>
+<p>分类决策函数为：</p>
+<p><span class="math display">\[
+    \begin{align}
+        f(x)&amp;=sign(\sum_{i=1}^{N_s}\alpha_i^{\ast}y_iK(x_i,x)+b^{\ast})
+    \end{align}
+\]</span></p>
+<p>无论是求解过程还是分类决策函数都与映射<span class="math inline">\(\phi\)</span>无关，这意味着我们关心核矩阵即可。</p>
+</div>
+<div id="计算核矩阵" class="section level1">
+<h1>3 计算核矩阵</h1>
+<p>计算Gram matrix K。这一步是核心，连接SMOTE和SVM。</p>
+<p><span class="math display">\[
+    K=(K(\boldsymbol{x}_i,\boldsymbol{x}_j))_{(N+P)\times(N+P)}=
+    \begin{bmatrix}
+        K_1&amp;K_2\\
+        K_2^T&amp;K_3
+    \end{bmatrix}
+\]</span></p>
+<p>这里，<span class="math inline">\(K_1=(K(\boldsymbol{x}_i,\boldsymbol{x}_j))_{N\times N},\quad \boldsymbol{x}_i,\boldsymbol{x}_j\in S\)</span></p>
+<p><span class="math inline">\(K_2=(K(\boldsymbol{x}_i,\boldsymbol{x}_j))_{N\times P},\quad \boldsymbol{x}_i\in S,\boldsymbol{x}_j\in S^{syn}\)</span></p>
+<p><span class="math inline">\(K_3=(K(\boldsymbol{x}_i,\boldsymbol{x}_j))_{P\times P},\quad \boldsymbol{x}_i,\boldsymbol{x}_j\in S^{syn}\)</span></p>
+<p>此外，为了方便后面的表示，我们用<span class="math inline">\(x_i^{pq}\)</span>来表示<span class="math inline">\(\boldsymbol{x}_p,\boldsymbol{x}_q\)</span>生成的样本，<span class="math inline">\(\delta^{pq}\)</span>表示对应的随机数。</p>
+<p>下面，我们可以给出<span class="math inline">\(K_2,K_3\)</span>中元素的具体表达。(我们需要将其表示成原样本集与核函数的形式，这样我们就避免了显式生成新样本，说白了，我们生成的不是样本，而是<span class="math inline">\(K(\boldsymbol{x}_i,\boldsymbol{x}_j)\)</span>，这就是核方法的精彩了)</p>
+<p><span class="math inline">\(K_2\)</span>中元素：</p>
+<p><span class="math display">\[
+    K(\boldsymbol{x}_i,\boldsymbol{x}_j^{pq})=(1-\delta^{pq})K(\boldsymbol{x}_i,\boldsymbol{x}_p)+\delta^{pq}K(\boldsymbol{x}_i,\boldsymbol{x}_q),\quad \boldsymbol{x}_i\in S,\boldsymbol{x}_j^{pq}\in S^{syn}
+\]</span></p>
+<p><span class="math inline">\(K_3\)</span>中元素：</p>
+<p><span class="math display">\[
+    K(\boldsymbol{x}_i^{lm},\boldsymbol{x}_j^{pq})=(1-\delta^{pq})(1-\delta^{lm})K(\boldsymbol{x}_p,\boldsymbol{x}_l)+(1-\delta^{pq})(\delta^{lm})K(\boldsymbol{x}_p,\boldsymbol{x}_m)+(\delta^{pq})(1-\delta^{lm})K(\boldsymbol{x}_q,\boldsymbol{x}_l)+(\delta^{pd})(\delta^{lm})K(\boldsymbol{x}_q,\boldsymbol{x}_m)
+\]</span></p>
+<p>这里，值得一提的是，我们的样本生成与核函数的具体表示无关，所以这一SMOTE方法适用于所有的核函数。</p>
+<p>下面是实现，分两步，一个是K-SMOTE，还有一个是基于SMO算法的SVM分类器。</p>
+</div>
+<div id="k-smote-1" class="section level1">
+<h1>4 K-SMOTE</h1>
+<p>首先加载训练集和测试集。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(StatComp21092)</span></code></pre></div>
+<pre><code>## 
+## 载入程辑包：&#39;StatComp21092&#39;</code></pre>
+<pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
+## 
+##     gibbsC</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;yeast_tra&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;yeast_test&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#load(file=&#39;D:/StatComp21092/StatComp21092/data/yeast_tra.rda&#39;)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#load(file=&#39;D:/StatComp21092/StatComp21092/data/yeast_test.rda&#39;)</span></span></code></pre></div>
+<p>接下来我们利用前面的公式计算核矩阵。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#定义三阶多项式核函数</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>kernel_poly<span class="ot">&lt;-</span><span class="cf">function</span>(x,y)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#x，y为特征空间上的向量</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>((x<span class="sc">%*%</span>y<span class="sc">+</span><span class="dv">1</span>)<span class="sc">^</span><span class="dv">3</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#定义再生核希尔伯特空间上的距离平方</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>distance<span class="ot">&lt;-</span><span class="cf">function</span>(x,y)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#x，y为特征空间上的向量</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  d_square<span class="ot">=</span><span class="fu">kernel_poly</span>(x,x)<span class="sc">+</span><span class="fu">kernel_poly</span>(y,y)<span class="sc">-</span><span class="dv">2</span><span class="sc">*</span><span class="fu">kernel_poly</span>(x,y)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(d_square)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#K_SMOTE，同时计算新的核矩阵与分类决策函数的核因子</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>K_SMOTE<span class="ot">&lt;-</span><span class="cf">function</span>(train_set,test_set,P,k)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#train_set,test_set分别为训练集和测试集，类型为dataframe</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#P为需要生成的少数类样本数</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">#k为kNN中近邻的个数</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#记录训练集中少数类和多数类的index</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  min_index<span class="ot">=</span>(<span class="fu">which</span>(train_set[<span class="st">&#39;Class&#39;</span>]<span class="sc">==</span><span class="dv">1</span>))</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  max_index<span class="ot">=</span>(<span class="fu">which</span>(train_set[<span class="st">&#39;Class&#39;</span>]<span class="sc">==</span><span class="dv">0</span>))</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#初始化核矩阵</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">=</span> <span class="fu">nrow</span>(train_set)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  K <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>,N<span class="sc">+</span>P,N<span class="sc">+</span>P)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  D <span class="ot">=</span> <span class="fu">matrix</span>(<span class="dv">0</span>,N<span class="sc">+</span>P,N<span class="sc">+</span>P)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">#初始化生成对与随机数</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  p_index<span class="ot">=</span><span class="fu">numeric</span>(<span class="at">length =</span> P)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  q_index<span class="ot">=</span><span class="fu">numeric</span>(<span class="at">length =</span> P)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  delta<span class="ot">=</span><span class="fu">runif</span>(P,<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">#计算原核矩阵</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>     <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>       K[i,j]<span class="ot">=</span><span class="fu">kernel_poly</span>(<span class="fu">data.matrix</span>(train_set)[i,<span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(train_set)<span class="sc">-</span><span class="dv">1</span>],<span class="fu">data.matrix</span>(train_set)[j,<span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(train_set)<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">#计算距离矩阵(我们这里只关心少数类)</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> min_index)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> min_index)</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>       D[i,j]<span class="ot">=</span><span class="fu">distance</span>(<span class="fu">data.matrix</span>(train_set)[i,<span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(train_set)<span class="sc">-</span><span class="dv">1</span>],<span class="fu">data.matrix</span>(train_set)[j,<span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(train_set)<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>       </span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>  <span class="co">#用少数类的距离矩阵结合KNN得到生成对</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>P)</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    p<span class="ot">=</span><span class="fu">sample</span>(min_index,<span class="dv">1</span>,<span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>    r<span class="ot">=</span>min_index[<span class="fu">rank</span>(D[p,min_index])]</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    q<span class="ot">=</span><span class="fu">sample</span>(r[<span class="dv">1</span><span class="sc">:</span>k],<span class="dv">1</span>,<span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    p_index[i]<span class="ot">=</span>p</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    q_index[i]<span class="ot">=</span>q</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">#生成，即填补核矩阵</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>  <span class="co">#填K2和K2转置：一个为原样本，一个为生成样本</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>P)</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N)</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>      p<span class="ot">=</span>p_index[i]</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>      q<span class="ot">=</span>q_index[i]</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>      K[i<span class="sc">+</span>N,j]<span class="ot">=</span>(<span class="dv">1</span><span class="sc">-</span>delta[i])<span class="sc">*</span>K[p,j]<span class="sc">+</span>delta[i]<span class="sc">*</span>K[q,j]</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>      K[j,i<span class="sc">+</span>N]<span class="ot">=</span>K[i<span class="sc">+</span>N,j]</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>  <span class="co">#填K3：均为生成样本</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>P)</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>P)</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>      l<span class="ot">=</span>p_index[i]</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>      m<span class="ot">=</span>q_index[i]</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>      p<span class="ot">=</span>p_index[j]</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a>      q<span class="ot">=</span>q_index[j]</span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>      K[i<span class="sc">+</span>N,j<span class="sc">+</span>N]<span class="ot">=</span>(<span class="dv">1</span><span class="sc">-</span>delta[j])<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>delta[i])<span class="sc">*</span>K[p,l]<span class="sc">+</span>(<span class="dv">1</span><span class="sc">-</span>delta[j])<span class="sc">*</span>delta[i]<span class="sc">*</span>K[p,m]<span class="sc">+</span>delta[j]<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>delta[i])<span class="sc">*</span>K[q,l]<span class="sc">+</span>delta[j]<span class="sc">*</span>delta[i]<span class="sc">*</span>K[q,m]</span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 下面填测试样本与训练集的核矩阵</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>  n<span class="ot">=</span><span class="fu">nrow</span>(test_set)</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>  gram_test<span class="ot">=</span><span class="fu">matrix</span>(<span class="dv">0</span>,n,N<span class="sc">+</span>P)</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n)</span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N)</span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>      gram_test[i,j]<span class="ot">=</span><span class="fu">kernel_poly</span>(<span class="fu">data.matrix</span>(test_set)[i,<span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(train_set)<span class="sc">-</span><span class="dv">1</span>],<span class="fu">data.matrix</span>(train_set)[j,<span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(train_set)<span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n)</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>P)</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>      p<span class="ot">=</span>p_index[j]</span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>      q<span class="ot">=</span>q_index[j]</span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>      gram_test[i,j<span class="sc">+</span>N]<span class="ot">=</span>(<span class="dv">1</span><span class="sc">-</span>delta[j])<span class="sc">*</span>gram_test[i,p]<span class="sc">+</span>delta[j]<span class="sc">*</span>gram_test[i,q]</span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>  mat<span class="ot">=</span><span class="fu">list</span>(<span class="st">&quot;train_km&quot;</span><span class="ot">=</span>K,<span class="st">&quot;test_km&quot;</span><span class="ot">=</span>gram_test)</span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(mat)</span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>由于R包e1071的svm函数的核函数参数中，只有rbf，poly，linear和nn这四种核函数，没有提供我们需要的核矩阵选项，所以我们还需要写一个基于SMO算法的SVM分类器。</p>
+</div>
+<div id="smo算法" class="section level1">
+<h1>5 SMO算法</h1>
+<p>我们之前提到了SVM算法是解决如下凸优化问题：</p>
+<p><span class="math display">\[
+    \begin{align}
+        &amp;\min_{\alpha}\quad \frac{1}{2}\sum_{i,j=1}^N\alpha_i\alpha_jy_iy_j K(x_i,x_j)-\sum_{i=1}^N\alpha_i\\
+        &amp;s.t \quad \sum_{i=1}^N\alpha_iy_i=0\\
+        &amp;\quad \quad 0\le\alpha_i\le C,\quad i=1,2,\cdots,N
+    \end{align}
+\]</span></p>
+<p>但随着样本量的增加，参数量会变得异常庞大。因此，我们不能直接对这个问题用梯度下降进行求解。</p>
+<p>SMO的想法是我们每次只优化两个变量<span class="math inline">\(\alpha_i,\alpha_j\)</span>，将其余变量视为常数，同时由于有等式约束，我们可以得到<span class="math inline">\(\alpha_i\)</span>与<span class="math inline">\(\alpha_j\)</span>之间的关系，进而可以求解。基于这样的想法，SMO算法将一个多变量的优化问题转化为多个简单的二次规划问题。</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#预处理</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#得到两个核矩阵</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>P<span class="ot">=</span><span class="dv">1000</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>mat<span class="ot">=</span><span class="fu">K_SMOTE</span>(yeast_tra,yeast_test,P,<span class="dv">3</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>train_matrix<span class="ot">=</span>mat<span class="sc">$</span>train_km</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>test_matrix<span class="ot">=</span>mat<span class="sc">$</span>test_km</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(train_matrix[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])</span></code></pre></div>
+<pre><code>##          [,1]     [,2]     [,3]     [,4]     [,5]
+## [1,] 15.93452 16.49569 14.48218 13.14593 15.20323
+## [2,] 16.49569 18.31415 16.14440 14.39146 16.33872
+## [3,] 14.48218 16.14440 14.91964 13.41511 15.19218
+## [4,] 13.14593 14.39146 13.41511 16.60284 13.79292
+## [5,] 15.20323 16.33872 15.19218 13.79292 16.06023</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(test_matrix[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>])</span></code></pre></div>
+<pre><code>##          [,1]     [,2]     [,3]     [,4]     [,5]
+## [1,] 15.09853 16.62042 14.65576 13.12255 14.87605
+## [2,] 13.90017 14.00798 12.78992 11.92110 13.72058
+## [3,] 16.81657 16.91126 15.07471 13.96966 16.16357
+## [4,] 13.01768 13.88284 13.00606 11.89138 13.68107
+## [5,] 13.95227 14.42166 13.45410 12.41304 14.34359</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#提取label并修正为1和-1</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>modify_label<span class="ot">=</span><span class="cf">function</span>(train_set, test_set, P)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  train_target<span class="ot">=</span><span class="fu">array</span>(<span class="dv">1</span>, <span class="at">dim =</span> <span class="fu">nrow</span>(train_set)<span class="sc">+</span>P)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  test_target<span class="ot">=</span><span class="fu">array</span>(<span class="dv">1</span>, <span class="at">dim =</span> <span class="fu">nrow</span>(test_set))</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(train_set))</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(train_set[i,<span class="st">&#39;Class&#39;</span>]<span class="sc">==</span><span class="dv">0</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>      train_target[i]<span class="ot">=</span><span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(train_set[i,<span class="st">&#39;Class&#39;</span>]<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>      train_target[i]<span class="ot">=</span><span class="dv">1</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(test_set))</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(test_set[i,<span class="st">&#39;Class&#39;</span>]<span class="sc">==</span><span class="dv">0</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>      test_target[i]<span class="ot">=</span><span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(test_set[i,<span class="st">&#39;Class&#39;</span>]<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>      test_target[i]<span class="ot">=</span><span class="dv">1</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  target<span class="ot">=</span><span class="fu">list</span>(<span class="st">&quot;train&quot;</span><span class="ot">=</span>train_target,<span class="st">&quot;test&quot;</span><span class="ot">=</span>test_target)</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(target)</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>all_target<span class="ot">=</span><span class="fu">modify_label</span>(yeast_tra,yeast_test,P)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>update_alpha_2<span class="ot">=</span><span class="cf">function</span>(alpha_2,L,H)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(alpha_2<span class="sc">&gt;</span>H)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(H)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(alpha_2<span class="sc">&lt;</span>L)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(L)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(alpha_2)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>SMO_SVC<span class="ot">=</span><span class="cf">function</span>(train_mat,test_mat,train_target,test_target,<span class="at">iter_max=</span><span class="dv">10</span>,<span class="at">epsilon=</span><span class="fl">0.01</span>,<span class="at">C=</span><span class="dv">1</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#初始化</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  N<span class="ot">=</span><span class="fu">nrow</span>(train_mat)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  alpha<span class="ot">=</span><span class="fu">numeric</span>(<span class="at">length =</span> <span class="fu">nrow</span>(train_mat))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  b<span class="ot">=</span><span class="dv">1</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  k<span class="ot">=</span><span class="dv">0</span><span class="co">#迭代次数</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#定义函数g</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  g<span class="ot">=</span><span class="cf">function</span>(i)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">sum</span>(alpha<span class="sc">*</span>train_target<span class="sc">*</span>train_mat[i,])<span class="sc">+</span>b)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  sample_without_i<span class="ot">=</span><span class="cf">function</span>(i)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    j<span class="ot">=</span><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>N,<span class="dv">1</span>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span>(j<span class="sc">==</span>i)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>      j<span class="ot">=</span><span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>N,<span class="dv">1</span>)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(j)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (k<span class="sc">&lt;</span>iter_max) </span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    change<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#取出i，j</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>      a_i<span class="ot">=</span>alpha[i]</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>      y_i<span class="ot">=</span>train_target[i]</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>      x_i<span class="ot">=</span>i</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>      E_i<span class="ot">=</span><span class="fu">g</span>(x_i)<span class="sc">-</span>y_i</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>      j<span class="ot">=</span><span class="fu">sample_without_i</span>(i)</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>      a_j<span class="ot">=</span>alpha[j]</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>      y_j<span class="ot">=</span>train_target[j]</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>      x_j<span class="ot">=</span>j</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>      E_j<span class="ot">=</span><span class="fu">g</span>(x_j)<span class="sc">-</span>y_j</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>      eta<span class="ot">=</span>train_mat[i,i]<span class="sc">+</span>train_mat[j,j]<span class="sc">-</span><span class="dv">2</span><span class="sc">*</span>train_mat[i,j]</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(eta<span class="sc">&lt;=</span><span class="dv">0</span>)</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">next</span></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>      <span class="co">#未经剪辑的new_a_j</span></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>      new_a_j<span class="ot">=</span>a_j<span class="sc">+</span>y_j<span class="sc">*</span>(E_i<span class="sc">-</span>E_j)<span class="sc">/</span>eta</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>      <span class="co">#剪辑a_j_new</span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(y_i<span class="sc">!=</span>y_j)</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>      {</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>        L<span class="ot">=</span><span class="fu">max</span>(<span class="dv">0</span>,a_j<span class="sc">-</span>a_i)</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>        H<span class="ot">=</span><span class="fu">min</span>(C,C<span class="sc">+</span>a_j<span class="sc">-</span>a_i)</span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>      {</span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>        L<span class="ot">=</span><span class="fu">max</span>(<span class="dv">0</span>,a_j<span class="sc">+</span>a_i<span class="sc">-</span>C)</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>        H<span class="ot">=</span><span class="fu">min</span>(C,a_i<span class="sc">+</span>a_j)</span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>      a_j_new<span class="ot">=</span><span class="fu">update_alpha_2</span>(new_a_j,L,H)</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>      a_i_new<span class="ot">=</span>a_i<span class="sc">+</span>y_i<span class="sc">*</span>y_j<span class="sc">*</span>(a_j<span class="sc">-</span>a_j_new)</span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(<span class="fu">abs</span>(a_j_new<span class="sc">-</span>a_j)<span class="sc">&lt;</span>epsilon)</span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">next</span></span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a>      <span class="co">#更新alpha</span></span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a>      alpha[i]<span class="ot">=</span>a_i_new</span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a>      alpha[j]<span class="ot">=</span>a_j_new</span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a>      <span class="co">#更新b</span></span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a>      b_i<span class="ot">=</span><span class="sc">-</span>E_i<span class="sc">-</span>y_i<span class="sc">*</span>train_mat[i,i]<span class="sc">*</span>(a_i_new <span class="sc">-</span> a_i) <span class="sc">-</span> y_j<span class="sc">*</span>train_mat[i,j]<span class="sc">*</span>(a_j_new <span class="sc">-</span> a_j) <span class="sc">+</span> b</span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a>      b_j<span class="ot">=</span><span class="sc">-</span>E_j<span class="sc">-</span>y_i<span class="sc">*</span>train_mat[i,j]<span class="sc">*</span>(a_i_new <span class="sc">-</span> a_i) <span class="sc">-</span> y_j<span class="sc">*</span>train_mat[j,j]<span class="sc">*</span>(a_j_new <span class="sc">-</span> a_j) <span class="sc">+</span> b</span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(<span class="fu">abs</span>(a_i_new<span class="sc">-</span>C<span class="sc">/</span><span class="dv">2</span>)<span class="sc">&lt;</span>C<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a>        b<span class="ot">=</span>b_i</span>
+<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span></span>
+<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">abs</span>(a_j_new<span class="sc">-</span>C<span class="sc">/</span><span class="dv">2</span>)<span class="sc">&lt;</span>C<span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a>          b<span class="ot">=</span>b_j</span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span></span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a>          b<span class="ot">=</span>(b_i<span class="sc">+</span>b_j)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a>      change<span class="ot">=</span>change<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(change<span class="sc">==</span><span class="dv">0</span>)</span>
+<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a>        k<span class="ot">=</span>k<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a>      <span class="cf">else</span></span>
+<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a>        k<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a>  <span class="co">#计算测试集结果</span></span>
+<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a>  result<span class="ot">=</span><span class="fu">numeric</span>(<span class="at">length =</span> <span class="fu">nrow</span>(test_mat))</span>
+<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(test_mat)) </span>
+<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a>    f<span class="ot">=</span><span class="fu">sum</span>(alpha<span class="sc">*</span>train_target<span class="sc">*</span>test_mat[i,])<span class="sc">+</span>b</span>
+<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(f<span class="sc">&gt;</span><span class="dv">0</span>)</span>
+<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a>      result[i]<span class="ot">=</span><span class="dv">1</span></span>
+<span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a>      result[i]<span class="ot">=</span><span class="sc">-</span><span class="dv">1</span></span>
+<span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-99"><a href="#cb13-99" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
+<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a>pred<span class="ot">=</span><span class="fu">SMO_SVC</span>(train_matrix,test_matrix,all_target<span class="sc">$</span>train,all_target<span class="sc">$</span>test,<span class="fl">1e1</span>,<span class="fl">1e-2</span>,<span class="dv">1</span>)</span>
+<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a>target<span class="ot">=</span>all_target<span class="sc">$</span>test</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ConfusionMatrix<span class="ot">=</span><span class="cf">function</span>(pred,target)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  N<span class="ot">=</span><span class="fu">length</span>(pred)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  TP<span class="ot">=</span>FP<span class="ot">=</span>FN<span class="ot">=</span>TN<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>N)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(pred[i]<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;&amp;</span>target[i]<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      TP<span class="ot">=</span>TP<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(pred[i]<span class="sc">==-</span><span class="dv">1</span><span class="sc">&amp;&amp;</span>target[i]<span class="sc">==-</span><span class="dv">1</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>      TN<span class="ot">=</span>TN<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(pred[i]<span class="sc">==</span><span class="dv">1</span><span class="sc">&amp;&amp;</span>target[i]<span class="sc">==-</span><span class="dv">1</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>      FP<span class="ot">=</span>FP<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(pred[i]<span class="sc">==-</span><span class="dv">1</span><span class="sc">&amp;&amp;</span>target[i]<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>      FN<span class="ot">=</span>FN<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  mat<span class="ot">=</span><span class="fu">matrix</span>(<span class="fu">c</span>(TP,FP,FN,TN),<span class="at">ncol=</span><span class="dv">2</span>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(mat)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ConfusionMatrix</span>(pred,target)</span></code></pre></div>
+<pre><code>##      [,1] [,2]
+## [1,]    9    0
+## [2,]   11  277</code></pre>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
