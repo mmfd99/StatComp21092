@@ -239,8 +239,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##     gibbsC</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;yeast_tra&quot;</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;yeast_test&quot;</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#load(file=&#39;D:/StatComp21092/StatComp21092/data/yeast_tra.rda&#39;)</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#load(file=&#39;D:/StatComp21092/StatComp21092/data/yeast_test.rda&#39;)</span></span></code></pre></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>train_set<span class="ot">=</span>yeast_tra[<span class="dv">1</span><span class="sc">:</span><span class="dv">500</span>,]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>test_set<span class="ot">=</span>yeast_test</span></code></pre></div>
 <p>接下来我们利用前面的公式计算核矩阵。</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#定义三阶多项式核函数</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>kernel_poly<span class="ot">&lt;-</span><span class="cf">function</span>(x,y)</span>
@@ -364,8 +364,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>SMO的想法是我们每次只优化两个变量<span class="math inline">\(\alpha_i,\alpha_j\)</span>，将其余变量视为常数，同时由于有等式约束，我们可以得到<span class="math inline">\(\alpha_i\)</span>与<span class="math inline">\(\alpha_j\)</span>之间的关系，进而可以求解。基于这样的想法，SMO算法将一个多变量的优化问题转化为多个简单的二次规划问题。</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#预处理</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#得到两个核矩阵</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>P<span class="ot">=</span><span class="dv">1000</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>mat<span class="ot">=</span><span class="fu">K_SMOTE</span>(yeast_tra,yeast_test,P,<span class="dv">3</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>P<span class="ot">=</span><span class="dv">400</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>mat<span class="ot">=</span><span class="fu">K_SMOTE</span>(train_set,test_set,P,<span class="dv">3</span>)</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>train_matrix<span class="ot">=</span>mat<span class="sc">$</span>train_km</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>test_matrix<span class="ot">=</span>mat<span class="sc">$</span>test_km</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -413,7 +413,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(target)</span>
 <span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>all_target<span class="ot">=</span><span class="fu">modify_label</span>(yeast_tra,yeast_test,P)</span></code></pre></div>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>all_target<span class="ot">=</span><span class="fu">modify_label</span>(train_set,test_set,P)</span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>update_alpha_2<span class="ot">=</span><span class="cf">function</span>(alpha_2,L,H)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>{</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(alpha_2<span class="sc">&gt;</span>H)</span>

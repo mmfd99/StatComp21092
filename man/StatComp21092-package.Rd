@@ -2,10 +2,10 @@
 \alias{StatComp-package}
 \docType{package}
 \title{
-This package provides several functions for benchmarking R and Rcpp.
+This package provides several functions for K-SMOTE and SMO.
 }
 \description{
-R and Rcpp versions of gibbs sampler and vaac function are provided in this package.
+K-SMOTE and SMO-SVC functions are provided in this package.
 }
 \author{
 Yu Ji

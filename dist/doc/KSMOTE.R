@@ -5,8 +5,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(StatComp21092)
 data("yeast_tra")
 data("yeast_test")
-#load(file='D:/StatComp21092/StatComp21092/data/yeast_tra.rda')
-#load(file='D:/StatComp21092/StatComp21092/data/yeast_test.rda')
+train_set=yeast_tra[1:500,]
+test_set=yeast_test
 
 ## -----------------------------------------------------------------------------
 #定义三阶多项式核函数
@@ -121,8 +121,8 @@ K_SMOTE<-function(train_set,test_set,P,k)
 ## -----------------------------------------------------------------------------
 #预处理
 #得到两个核矩阵
-P=1000
-mat=K_SMOTE(yeast_tra,yeast_test,P,3)
+P=400
+mat=K_SMOTE(train_set,test_set,P,3)
 train_matrix=mat$train_km
 test_matrix=mat$test_km
 
@@ -160,7 +160,7 @@ modify_label=function(train_set, test_set, P)
   return(target)
 }
 
-all_target=modify_label(yeast_tra,yeast_test,P)
+all_target=modify_label(train_set,test_set,P)
 
 ## -----------------------------------------------------------------------------
 update_alpha_2=function(alpha_2,L,H)

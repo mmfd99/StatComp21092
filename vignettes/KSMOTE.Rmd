@@ -136,8 +136,8 @@ $$
 library(StatComp21092)
 data("yeast_tra")
 data("yeast_test")
-#load(file='D:/StatComp21092/StatComp21092/data/yeast_tra.rda')
-#load(file='D:/StatComp21092/StatComp21092/data/yeast_test.rda')
+train_set=yeast_tra[1:500,]
+test_set=yeast_test
 ```
 
 
@@ -274,8 +274,8 @@ SMO的想法是我们每次只优化两个变量$\alpha_i,\alpha_j$，将其余�
 ```{r}
 #预处理
 #得到两个核矩阵
-P=1000
-mat=K_SMOTE(yeast_tra,yeast_test,P,3)
+P=400
+mat=K_SMOTE(train_set,test_set,P,3)
 train_matrix=mat$train_km
 test_matrix=mat$test_km
 
@@ -314,7 +314,7 @@ modify_label=function(train_set, test_set, P)
   return(target)
 }
 
-all_target=modify_label(yeast_tra,yeast_test,P)
+all_target=modify_label(train_set,test_set,P)
 ```
 
 ```{r}
