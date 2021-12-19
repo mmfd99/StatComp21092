@@ -133,6 +133,9 @@ $$
 
 首先加载训练集和测试集。
 ```{r}
+library(StatComp21092)
+data("yeast_tra")
+data("yeast_test")
 #load(file='D:/StatComp21092/StatComp21092/data/yeast_tra.rda')
 #load(file='D:/StatComp21092/StatComp21092/data/yeast_test.rda')
 ```
@@ -155,7 +158,6 @@ distance<-function(x,y)
   d_square=kernel_poly(x,x)+kernel_poly(y,y)-2*kernel_poly(x,y)
   return(d_square)
 }
-#kernel_poly(data.matrix(yeast_tra)[1,3:ncol(yeast_tra)-1],data.matrix(yeast_tra)[2,3:ncol(yeast_tra)-1])
 ```
 ```{r}
 #K_SMOTE，同时计算新的核矩阵与分类决策函数的核因子
@@ -249,7 +251,6 @@ K_SMOTE<-function(train_set,test_set,P,k)
   
   return(mat)
 }
-#K_SMOTE(yeast_tra,yeast_test,2,3)
 ```
 
 由于R包e1071的svm函数的核函数参数中，只有rbf，poly，linear和nn这四种核函数，没有提供我们需要的核矩阵选项，所以我们还需要写一个基于SMO算法的SVM分类器。
@@ -273,10 +274,13 @@ SMO的想法是我们每次只优化两个变量$\alpha_i,\alpha_j$，将其余�
 ```{r}
 #预处理
 #得到两个核矩阵
-#P=1000
-#mat=K_SMOTE(yeast_tra,yeast_test,P,3)
-#train_matrix=mat$train_km
-#test_matrix=mat$test_km
+P=1000
+mat=K_SMOTE(yeast_tra,yeast_test,P,3)
+train_matrix=mat$train_km
+test_matrix=mat$test_km
+
+print(train_matrix[1:5,1:5])
+print(test_matrix[1:5,1:5])
 ```
 
 ```{r}
@@ -310,7 +314,7 @@ modify_label=function(train_set, test_set, P)
   return(target)
 }
 
-#all_target=modify_label(yeast_tra,yeast_test,P)
+all_target=modify_label(yeast_tra,yeast_test,P)
 ```
 
 ```{r}
@@ -426,8 +430,8 @@ SMO_SVC=function(train_mat,test_mat,train_target,test_target,iter_max=10,epsilon
   }
   return(result)
 }
-#pred=SMO_SVC(train_matrix,test_matrix,all_target$train,all_target$test,1e1,1e-2,1)
-#target=all_target$test
+pred=SMO_SVC(train_matrix,test_matrix,all_target$train,all_target$test,1e1,1e-2,1)
+target=all_target$test
 ```
 ```{r}
 ConfusionMatrix=function(pred,target)
@@ -449,5 +453,5 @@ ConfusionMatrix=function(pred,target)
   mat=matrix(c(TP,FP,FN,TN),ncol=2)
   return(mat)
 }
-#ConfusionMatrix(pred,target)
+ConfusionMatrix(pred,target)
 ```
