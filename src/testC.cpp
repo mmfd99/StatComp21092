@@ -1,8 +1,8 @@
 #include <Rcpp.h>
 using namespace Rcpp;
-//' @title A Gibbs sampler using Rcpp
-//' @description A Gibbs sampler using Rcpp
-//' @param x the number of samples
+//' @title A test function
+//' @description A test function
+//' @param x a number
 //' @export
 // [[Rcpp::export]]
 NumericVector timesTwo(NumericVector x) {

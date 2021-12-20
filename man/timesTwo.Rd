@@ -2,13 +2,13 @@
 % Please edit documentation in R/RcppExports.R
 \name{timesTwo}
 \alias{timesTwo}
-\title{A Gibbs sampler using Rcpp}
+\title{A test function}
 \usage{
 timesTwo(x)
 }
 \arguments{
-\item{x}{the number of samples}
+\item{x}{a number}
 }
 \description{
-A Gibbs sampler using Rcpp
+A test function
 }
